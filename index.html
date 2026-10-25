@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4d0dc" />
+  <title>For You · Open Softly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blush: #f4d0dc;
+      --rose: #d97893;
+      --deep: #7a3148;
+      --ink: #2f1c24;
+      --cream: #fff7f4;
+      --mint: #d5ebe3;
+      --teal: #3f6f66;
+      --shadow: 0 18px 42px rgba(47, 28, 36, 0.16);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Nunito", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 0% 0%, #ffe6ef, transparent 55%),
+        radial-gradient(ellipse 60% 45% at 100% 10%, #dff3ec, transparent 50%),
+        linear-gradient(165deg, #fff6f8 0%, #f4d0dc 42%, #f2e8e1 100%);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .wrap {
+      width: min(460px, 100%);
+      margin: 0 auto;
+      padding: 1rem 0.9rem 3.5rem;
+      min-height: 100dvh;
+    }
+    .display {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      color: var(--deep);
+      margin: 0 0 0.65rem;
+      font-size: clamp(1.75rem, 6.5vw, 2.25rem);
+    }
+    .eyebrow {
+      margin: 0 0 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--deep);
+      opacity: 0.72;
+    }
+    .whisper {
+      margin: 0;
+      line-height: 1.55;
+      color: rgba(47, 28, 36, 0.82);
+      font-size: 1rem;
+    }
+    .screen { display: none; animation: rise 0.42s ease; }
+    .screen.active { display: block; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+    @keyframes pop {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .card {
+      background: rgba(255, 247, 244, 0.94);
+      border-radius: 1.55rem;
+      padding: 1.25rem 1.1rem 1.4rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .hero {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      max-height: 52vh;
+      object-fit: cover;
+      border-radius: 1.2rem;
+      display: block;
+      margin: 0.9rem 0 1rem;
+      box-shadow: 0 12px 28px rgba(47, 28, 36, 0.18);
+    }
+    .gift {
+      width: 108px; height: 108px; margin: 1.2rem auto 0.4rem;
+      border: 0; border-radius: 1.3rem; cursor: pointer;
+      background: linear-gradient(145deg, #e8a0b4, #f0c0cd);
+      display: grid; place-items: center; font-size: 2.7rem;
+      animation: floaty 2.8s ease-in-out infinite;
+      box-shadow: 0 14px 28px rgba(122, 49, 72, 0.28);
+    }
+    .btn-row { display: grid; gap: 0.7rem; margin-top: 1.2rem; }
+    .btn-row.two { grid-template-columns: 1fr 1fr; }
+    button.choice {
+      appearance: none; border: 0; border-radius: 999px;
+      padding: 0.92rem 1rem; font: inherit; font-weight: 800;
+      font-size: 0.98rem; cursor: pointer; color: #fff;
+      background: var(--deep);
+      box-shadow: 0 10px 20px rgba(122, 49, 72, 0.28);
+    }
+    button.choice:active { transform: scale(0.97); }
+    button.choice.soft {
+      background: #fff; color: var(--deep);
+      border: 1.5px solid rgba(122, 49, 72, 0.18);
+      box-shadow: 0 6px 14px rgba(47, 28, 36, 0.06);
+    }
+    button.choice.mint { background: var(--teal); }
+    button.choice.rose { background: #c45c7a; }
+    .note { margin: 0.85rem 0 0; text-align: center; font-size: 0.8rem; opacity: 0.68; }
+    .big-yes {
+      font-family: "Fraunces", serif; text-align: center;
+      font-size: 2.3rem; color: var(--deep); margin: 0.9rem 0;
+      animation: pop 0.45s ease;
+    }
+    .stamp {
+      display: inline-block; margin-top: 0.7rem;
+      padding: 0.3rem 0.65rem; border-radius: 999px;
+      background: rgba(230, 181, 103, 0.35);
+      font-size: 0.75rem; font-weight: 800; color: var(--deep);
+    }
+    .msg-stack { display: grid; gap: 0.65rem; margin-top: 0.9rem; }
+    .bubble {
+      background: var(--mint); border-radius: 1rem;
+      padding: 0.85rem 0.95rem; font-weight: 700; animation: pop 0.35s ease;
+    }
+    .bubble:nth-child(even) { background: #ffe1eb; margin-left: 1rem; }
+
+    .gallery {
+      display: grid; gap: 0.85rem; margin-top: 1rem;
+    }
+    .polaroid {
+      background: #fff; border-radius: 1rem; padding: 0.55rem 0.55rem 0.85rem;
+      box-shadow: 0 10px 24px rgba(47, 28, 36, 0.12);
+      animation: pop 0.4s ease;
+    }
+    .polaroid img {
+      width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+      border-radius: 0.7rem; display: block; background: #f0e4e8;
+      image-orientation: from-image;
+    }
+    .polaroid.sideways img { object-fit: contain; background: #2f1c24; aspect-ratio: 5 / 4; }
+    .polaroid p {
+      margin: 0.55rem 0.2rem 0; font-size: 0.88rem; font-weight: 700;
+      color: var(--deep); text-align: center;
+    }
+    .polaroid .cap {
+      display: block; font-size: 0.75rem; font-weight: 600;
+      color: rgba(47, 28, 36, 0.65); margin-top: 0.15rem;
+    }
+
+    .clips { display: grid; gap: 0.9rem; margin-top: 1rem; }
+    .clip-card {
+      background: #1a1216; border-radius: 1.1rem; overflow: hidden;
+      box-shadow: 0 12px 26px rgba(47, 28, 36, 0.2);
+    }
+    .clip-card video {
+      width: 100%; display: block; max-height: 55vh; background: #000;
+    }
+    .clip-card .meta {
+      padding: 0.65rem 0.85rem 0.8rem; color: #f8eef2;
+      font-size: 0.86rem; font-weight: 700;
+    }
+
+    .hearts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 40; }
+    .hearts span {
+      position: absolute; bottom: -16px; animation: up 3s linear forwards; font-size: 1.15rem;
+    }
+    @keyframes up {
+      to { transform: translateY(-110vh) rotate(320deg); opacity: 0; }
+    }
+    .dots {
+      display: flex; gap: 0.35rem; justify-content: center; margin-bottom: 0.75rem;
+    }
+    .dots i {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(122, 49, 72, 0.2);
+    }
+    .dots i.on { background: var(--deep); }
+    .confetti { text-align: center; font-size: 1.7rem; letter-spacing: 0.15rem; margin: 0.4rem 0 0.7rem; }
+
+    /* Full-screen ending video */
+    .screen.end-screen {
+      position: fixed; inset: 0; z-index: 30;
+      margin: 0; padding: 0; background: #000;
+      width: 100%; height: 100dvh;
+    }
+    .screen.end-screen.active { display: block; }
+    .end-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; background: #000;
+    }
+    .end-overlay {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 1.4rem 1rem calc(1.4rem + env(safe-area-inset-bottom));
+      background: linear-gradient(transparent, rgba(20, 8, 14, 0.88) 45%);
+      color: #fff7f4; text-align: center;
+    }
+    .end-overlay .display {
+      color: #fff7f4; font-size: clamp(1.35rem, 5.5vw, 1.85rem);
+      margin-bottom: 0.35rem;
+    }
+    .end-overlay .whisper {
+      color: rgba(255, 247, 244, 0.88);
+      font-size: 0.92rem; margin: 0 auto 0.9rem;
+      max-width: 22rem;
+    }
+    .end-overlay .btn-row { max-width: 280px; margin: 0.6rem auto 0; }
+    .end-overlay button.choice.soft {
+      background: rgba(255, 255, 255, 0.92);
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
+  <div class="wrap">
+
+    <!-- OPEN -->
+    <section class="screen active" data-screen="open">
+      <div class="dots" data-step="0"></div>
+      <div class="card">
+        <p class="eyebrow">Only for you 💍💗</p>
+        <h1 class="display">Open softly</h1>
+        <p class="whisper">I couldn’t stand next to you today… so I made this — our photos, our videos, and every soft thing I wanted to say. Tap the gift 🎁</p>
+        <img class="hero" src="media/photo-01.jpg" alt="Us with your cake" />
+        <button class="gift" type="button" onclick="burst(); go('hello')" aria-label="Open">🎁</button>
+        <p class="note">No login · works offline once opened</p>
+      </div>
+    </section>
+
+    <!-- HELLO -->
+    <section class="screen" data-screen="hello">
+      <div class="dots" data-step="1"></div>
+      <div class="card">
+        <p class="eyebrow">Chapter 1</p>
+        <h2 class="display">Hi, my almost-bride 💕</h2>
+        <img class="hero" src="media/photo-02.jpg" alt="You at nuqi" style="max-height:42vh" />
+        <p class="whisper">That soft smile under the lights… I wish I was right there. Ready to feel a little spoiled anyway? 🥺✨</p>
+        <div class="btn-row two">
+          <button class="choice rose" type="button" onclick="burst(); go('yespath')">Yes ✨</button>
+          <button class="choice soft" type="button" onclick="burst(); go('nopush')">No 😌</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="nopush">
+      <div class="dots" data-step="1"></div>
+      <div class="card">
+        <p class="eyebrow">Nice try</p>
+        <h2 class="display">Wrong answer… still cute</h2>
+        <p class="whisper">“No” isn’t invited to your birthday — or to our forever. I already voted for you. 💍😌</p>
+        <p class="big-yes">It’s YES.</p>
+        <div class="btn-row">
+          <button class="choice" type="button" onclick="burst(); go('yespath')">Okay fine, Yes 🥺</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PATH -->
+    <section class="screen" data-screen="yespath">
+      <div class="dots" data-step="2"></div>
+      <div class="card">
+        <p class="eyebrow">Chapter 2 · Pick a door</p>
+        <h2 class="display">Left or right?</h2>
+        <p class="whisper">Left is soft. Right is playful. Both lead to us.</p>
+        <div class="btn-row two">
+          <button class="choice soft" type="button" onclick="burst(); go('left')">← Soft</button>
+          <button class="choice mint" type="button" onclick="burst(); go('right')">Playful →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="left">
+      <div class="dots" data-step="3"></div>
+      <div class="card">
+        <p class="eyebrow">Soft path</p>
+        <h2 class="display">Quiet love note 🤍</h2>
+        <img class="hero" src="media/photo-03.jpg" alt="Us with flowers" style="max-height:40vh" />
+        <p class="whisper">This is your last birthday without me beside you. In a few months we’ll be married — and after that, I want every cake, every wish, every silly photo with you. I’m sorry I’m not there today… but my heart is. Happy birthday, my love. 🎂💗</p>
+        <span class="stamp">door: soft</span>
+        <div class="btn-row">
+          <button class="choice" type="button" onclick="go('messages')">Messages →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="right">
+      <div class="dots" data-step="3"></div>
+      <div class="card">
+        <p class="eyebrow">Playful path</p>
+        <h2 class="display">Official announcement 📢✨</h2>
+        <img class="hero" src="media/photo-07.jpg" alt="Us under fairy lights" style="max-height:40vh" />
+        <p class="whisper">Breaking news: the cutest fiancée just leveled up 🎂 and in ~3 months she becomes my wife 💍. I wanted to be there so badly — you asked, and I couldn’t make it. So this page is me showing up the only way I can today. You’re still my whole soft world. 🥺💕</p>
+        <span class="stamp">door: playful</span>
+        <div class="btn-row">
+          <button class="choice mint" type="button" onclick="go('messages')">Messages →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section class="screen" data-screen="messages">
+      <div class="dots" data-step="4"></div>
+      <div class="card">
+        <p class="eyebrow">Chapter 3 · Tap to reveal</p>
+        <h2 class="display">From my heart 💌</h2>
+        <p class="whisper">Tap — one love note at a time.</p>
+        <div class="msg-stack" id="msgStack"></div>
+        <div class="btn-row">
+          <button class="choice rose" type="button" id="msgBtn" onclick="nextMsg()">Reveal next 💌</button>
+          <button class="choice soft" type="button" id="msgContinue" hidden onclick="go('gallery')">Our photos →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="screen" data-screen="gallery">
+      <div class="dots" data-step="5"></div>
+      <div class="card">
+        <p class="eyebrow">Chapter 4 · Memories</p>
+        <h2 class="display">Us, in frames 📸💗</h2>
+        <p class="whisper">Scroll slowly… until I’m there in person, keep these close. 🤍</p>
+        <div class="gallery" id="gallery"></div>
+        <div class="btn-row">
+          <button class="choice" type="button" onclick="go('videos')">Our videos →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section class="screen" data-screen="videos">
+      <div class="dots" data-step="6"></div>
+      <div class="card">
+        <p class="eyebrow">Chapter 5 · Motion</p>
+        <h2 class="display">Little clips of us</h2>
+        <p class="whisper">Tap play on any clip. Sound on if you want.</p>
+        <div class="clips" id="clips"></div>
+        <div class="btn-row">
+          <button class="choice rose" type="button" onclick="burst(16); go('finale')">Almost there →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINALE -->
+    <section class="screen" data-screen="finale">
+      <div class="dots" data-step="7"></div>
+      <div class="card">
+        <p class="eyebrow">Almost the end</p>
+        <div class="confetti">🎂🌸✨💗</div>
+        <h2 class="display">Happy Birthday, my love 🎂💗</h2>
+        <img class="hero" src="media/photo-09.jpg" alt="Us in pink light" style="max-height:38vh" />
+        <p class="whisper">
+          I know you wanted me there. I wanted that too — more than this page can hold.
+          This is your last birthday I’ll miss. In the next three months we marry,
+          and after that every birthday is ours: same cake energy, same silly videos, same us. 💍✨
+          Thank you for waiting, for loving me anyway, for being my forever person.
+        </p>
+        <p class="big-yes" style="font-size:1.45rem">I pick you. Always. 🤍💍</p>
+        <div class="btn-row">
+          <button class="choice rose" type="button" onclick="burst(12); go('endvideo')">One last video · full screen 🎬</button>
+        </div>
+        <p class="note">Made with our real photos &amp; videos · just for you</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ENDING: longer video, full screen — last stop -->
+  <section class="screen end-screen" data-screen="endvideo">
+    <video
+      id="endVideo"
+      class="end-video"
+      src="media/clip-06.mp4"
+      controls
+      playsinline
+      preload="metadata"
+    ></video>
+    <div class="end-overlay">
+      <h2 class="display">Stay here with me 🤍</h2>
+      <p class="whisper">Your last birthday without me — then forever, side by side. I love you. 💍💗</p>
+      <div class="btn-row two">
+        <button class="choice soft" type="button" onclick="replayEnd()">Replay video ↻</button>
+        <button class="choice" type="button" onclick="burst(18); go('open')">Start over</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const messages = [
+      "💗 I’m sorry I’m not beside you today… you asked me to come, and I couldn’t. That still sits soft and heavy in my chest.",
+      "🥺 Please don’t feel alone on your birthday — open this and know I’m thinking of you every hour.",
+      "🎂 This is your last birthday without me. After we marry, I never want to miss another one.",
+      "💍 In the next three months you become my wife… and I already feel so lucky I get to choose you forever.",
+      "✨ You’re not just my girlfriend — you’re my home, my calm, my favorite person in every photo we have.",
+      "🌸 Thank you for loving me even when distance shows up. You make waiting feel like something beautiful.",
+      "💕 I can’t wait for cake with you next year — silly videos, loud laughs, my arm around you for real.",
+      "🤍 Happy birthday, my almost-bride. I pick you today, on our wedding day, and every soft morning after. I love you."
+    ];
+
+    const photos = [
+      { src: "media/photo-01.jpg", title: "Cake night 🎂", cap: "Soon every cake is ours — together" },
+      { src: "media/photo-02.jpg", title: "You, glowing ✨", cap: "The smile I’m marrying" },
+      { src: "media/photo-03.jpg", title: "Flowers & us 🌸", cap: "Quiet joy. Forever energy." },
+      { src: "media/photo-04.jpg", title: "Mountain wind 🏔️", cap: "Head on my shoulder — my favorite place" },
+      { src: "media/photo-05.jpg", title: "Close 🤍", cap: "Even distance can’t shrink this", sideways: true },
+      { src: "media/photo-06.jpg", title: "Home frame 💗", cap: "Kept this because you feel like home" },
+      { src: "media/photo-07.jpg", title: "Fairy lights 🌟", cap: "My favorite view is always you" },
+      { src: "media/photo-08.jpg", title: "One more keep 💕", cap: "Because loving you needs extra frames" },
+      { src: "media/photo-09.jpg", title: "Pink night 💍", cap: "Choosing each other — again & again" }
+    ];
+
+    const clips = [
+      { src: "media/clip-01.mp4", title: "Clip 1 · us moving 💕" },
+      { src: "media/clip-02.mp4", title: "Clip 2 · short & sweet ✨" },
+      { src: "media/clip-03.mp4", title: "Clip 3 · your smile 🥺" },
+      { src: "media/clip-04.mp4", title: "Clip 4 · favorite second 💗" },
+      { src: "media/clip-05.mp4", title: "Clip 5 · just because 🌸" }
+    ];
+
+    let msgIndex = 0;
+
+    function paintDots() {
+      document.querySelectorAll(".dots").forEach((el) => {
+        const step = Number(el.getAttribute("data-step") || 0);
+        el.innerHTML = "";
+        for (let i = 0; i < 9; i++) {
+          const d = document.createElement("i");
+          if (i <= step) d.classList.add("on");
+          el.appendChild(d);
+        }
+      });
+    }
+
+    function pauseAllVideos(exceptId) {
+      document.querySelectorAll("video").forEach((v) => {
+        if (exceptId && v.id === exceptId) return;
+        try { v.pause(); } catch (e) {}
+      });
+    }
+
+    function playEndVideo() {
+      const v = document.getElementById("endVideo");
+      if (!v) return;
+      try {
+        v.currentTime = 0;
+        v.play();
+      } catch (e) {}
+    }
+
+    function replayEnd() {
+      burst(8);
+      playEndVideo();
+    }
+
+    function go(name) {
+      document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+      const next = document.querySelector('[data-screen="' + name + '"]');
+      if (next) next.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (name === "messages") {
+        msgIndex = 0;
+        document.getElementById("msgStack").innerHTML = "";
+        document.getElementById("msgBtn").hidden = false;
+        document.getElementById("msgContinue").hidden = true;
+      }
+      if (name === "gallery") buildGallery();
+      if (name === "videos") buildClips();
+      paintDots();
+      if (name === "endvideo") {
+        pauseAllVideos("endVideo");
+        playEndVideo();
+      } else {
+        pauseAllVideos();
+      }
+    }
+
+    function nextMsg() {
+      const stack = document.getElementById("msgStack");
+      if (msgIndex >= messages.length) return;
+      const b = document.createElement("div");
+      b.className = "bubble";
+      b.textContent = messages[msgIndex++];
+      stack.appendChild(b);
+      burst(2);
+      if (msgIndex >= messages.length) {
+        document.getElementById("msgBtn").hidden = true;
+        document.getElementById("msgContinue").hidden = false;
+      }
+    }
+
+    function buildGallery() {
+      const root = document.getElementById("gallery");
+      if (root.dataset.ready) return;
+      root.innerHTML = photos.map((p) => `
+        <figure class="polaroid${p.sideways ? " sideways" : ""}">
+          <img src="${p.src}" alt="${p.title}" loading="lazy" />
+          <p>${p.title}<span class="cap">${p.cap}</span></p>
+        </figure>
+      `).join("");
+      root.dataset.ready = "1";
+    }
+
+    function buildClips() {
+      const root = document.getElementById("clips");
+      if (root.dataset.ready) return;
+      root.innerHTML = clips.map((c) => `
+        <div class="clip-card">
+          <video src="${c.src}" controls playsinline preload="metadata"></video>
+          <div class="meta">${c.title}</div>
+        </div>
+      `).join("");
+      root.dataset.ready = "1";
+    }
+
+    function burst(n = 12) {
+      const layer = document.getElementById("hearts");
+      const glyphs = ["💗", "🌸", "✨", "💞", "🎀", "🎂"];
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement("span");
+        s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+        s.style.left = Math.random() * 100 + "%";
+        s.style.animationDuration = 2.2 + Math.random() * 1.8 + "s";
+        s.style.fontSize = 0.85 + Math.random() * 1.1 + "rem";
+        layer.appendChild(s);
+        setTimeout(() => s.remove(), 4000);
+      }
+    }
+
+    paintDots();
+  </script>
+</body>
+</html>
